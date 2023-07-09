@@ -16,7 +16,40 @@ namespace SearchByPatternInText
         /// <exception cref="ArgumentException">Thrown if text or pattern is null.</exception>
         public static int[] SearchPatternString(this string? text, string? pattern, bool overlap)
         {
-            throw new NotImplementedException("You need to implement this method.");
+            if (string.IsNullOrEmpty(text))
+            {
+                throw new ArgumentException("Text cannot be null or empty.");
+            }
+
+            if (string.IsNullOrEmpty(pattern))
+            {
+                throw new ArgumentException("Pattern cannot be null or empty.");
+            }
+
+            List<int> positions = new List<int>();
+
+            int index = 0;
+            while (index < text.Length)
+            {
+                int position = text.IndexOf(pattern, index);
+                if (position == -1)
+                {
+                    break;
+                }
+
+                positions.Add(position + 1);
+
+                if (overlap)
+                {
+                    index = position + 1;
+                }
+                else
+                {
+                    index = position + pattern.Length;
+                }
+            }
+
+            return positions.ToArray();
         }
     }
 }
